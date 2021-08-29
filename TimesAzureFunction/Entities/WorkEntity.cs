@@ -7,7 +7,7 @@ namespace TimesAzureFunction.Entities
 {
     public class WorkEntity : TableEntity
     {
-        public int EmployeeId { get; set; }
+        public string EmployeeId { get; set; }
 
         public DateTime WorkingTime { get; set; }
 
