@@ -134,6 +134,119 @@ namespace TimesAzureFunction.Functions
 
             });
         }
+
+
+
+        [FunctionName(nameof(GetAllTickets))]
+        public static async Task<IActionResult> GetAllTickets(
+           [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "TableWork")] HttpRequest req,
+           [Table("TableWork", Connection = "AzureWebJobsStorage")] CloudTable todoTable,
+           ILogger log)
+        {
+            log.LogInformation("Get All Hours worked that exist in the table");
+
+            TableQuery<WorkEntity> query = new TableQuery<WorkEntity>();
+            TableQuerySegment<WorkEntity> todos = await todoTable.ExecuteQuerySegmentedAsync(query, null);
+
+
+
+            string message = "Retrieved all";
+            log.LogInformation(message);
+
+
+
+
+            return new OkObjectResult(new ResponseWork
+            {
+                IsSucces = true,
+                Message = message,
+                Result = todos
+
+            });
+        }
+
+
+
+
+
+        [FunctionName(nameof(GetInformationById))]
+        public static IActionResult GetInformationById(
+           [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "TableWork/{id}")] HttpRequest req,
+           [Table("TableWork", "TODO","{id}" , Connection = "AzureWebJobsStorage")] WorkEntity workEntity,
+           string id,
+           ILogger log)
+        {
+            log.LogInformation($"Get information by id : {id}, received");
+
+            if (workEntity == null)
+            {
+                return new BadRequestObjectResult(new ResponseWork
+                {
+                    IsSucces = false,
+                    Message = "EmployeeId not found"
+
+                });
+
+            }
+
+
+
+            string message = $"information: {workEntity.RowKey}, retrieved";
+            log.LogInformation(message);
+
+
+
+
+            return new OkObjectResult(new ResponseWork
+            {
+                IsSucces = true,
+                Message = message,
+                Result = workEntity
+
+            });
+        }
+
+
+
+
+
+        [FunctionName(nameof(DeleteInformation))]
+        public static async Task<IActionResult> DeleteInformation(
+           [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "TableWork/{id}")] HttpRequest req,
+           [Table("TableWork", "TODO", "{id}", Connection = "AzureWebJobsStorage")] WorkEntity workEntity,
+             [Table("TableWork", Connection = "AzureWebJobsStorage")] CloudTable todoTable,
+           string id,
+           ILogger log)
+        {
+            log.LogInformation($"Delete Information : {id}, received");
+
+            if (workEntity == null)
+            {
+                return new BadRequestObjectResult(new ResponseWork
+                {
+                    IsSucces = false,
+                    Message = "EmployeeId not found"
+
+                });
+
+            }
+
+            await todoTable.ExecuteAsync(TableOperation.Delete(workEntity));
+
+            string message = $"information: {workEntity.RowKey}, deleted";
+            log.LogInformation(message);
+
+
+
+
+            return new OkObjectResult(new ResponseWork
+            {
+                IsSucces = true,
+                Message = message,
+                Result = workEntity
+
+            });
+        }
     }
 
 }
