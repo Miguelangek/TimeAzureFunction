@@ -9,9 +9,9 @@ namespace TimesAzureFunction.Entities
     {
         public string EmployeeId { get; set; }
 
-        public DateTime WorkingTime { get; set; }
+        public DateTime Date { get; set; }
 
-        public int MinutesWorked { get; set; }
+        public double MinutesWorked { get; set; }
 
 
     }
