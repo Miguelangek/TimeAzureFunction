@@ -14,7 +14,7 @@ namespace TimesAzureFunction.Functions
             [Table("TableWork", Connection = "AzureWebJobsStorage")] CloudTable todoTable,
             ILogger log)
         {
-            log.LogInformation($"validate the consolidated hours: {DateTime.Now}");
+            log.LogInformation($"Deleting completed function executed at: {DateTime.Now}");
 
             string filter = TableQuery.GenerateFilterConditionForBool("IsCompleted", QueryComparisons.Equal, true);
             TableQuery <WorkEntity>  query = new  TableQuery<WorkEntity>().Where(filter);

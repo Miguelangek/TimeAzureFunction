@@ -67,7 +67,7 @@ namespace todomigue.Test.Helpers
         }
 
 
-        public static DefaultHttpRequest CreateHttpRequest()
+        public static DefaultHttpRequest CreateHttpRequest(string todoId)
         {
 
             return new DefaultHttpRequest(new DefaultHttpContext());

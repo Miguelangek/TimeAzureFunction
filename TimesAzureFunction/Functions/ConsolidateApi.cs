@@ -11,6 +11,7 @@ using Microsoft.WindowsAzure.Storage.Table;
 using todomigue.Common.Model;
 using todomigue.Common.Response;
 using TimesAzureFunction.Entities;
+using Microsoft.AspNetCore.Http.Internal;
 
 namespace TimesAzureFunction.Functions
 {
@@ -135,7 +136,7 @@ namespace TimesAzureFunction.Functions
             });
         }
 
-
+      
 
         [FunctionName(nameof(GetAllTickets))]
         public static async Task<IActionResult> GetAllTickets(

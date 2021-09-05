@@ -10,7 +10,7 @@ namespace todomigue.Test.Helpers
 
         public ListLogger()
         {
-            Logs = new List<string>;
+            Logs = new List<string>();
         }
 
         public IList<string> Logs;
