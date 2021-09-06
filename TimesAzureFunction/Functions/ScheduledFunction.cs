@@ -15,11 +15,14 @@ namespace TimesAzureFunction.Functions
     public static class ScheduledFunction
     {
         [FunctionName("ScheduledFunction")]
-        public static async Task Run([TimerTrigger("0 */5 * * * *")]TimerInfo myTimer,
+        public static async Task Run([TimerTrigger("0 */1 * * * *")]TimerInfo myTimer,
              [Table("TableWork", Connection = "AzureWebJobsStorage")] CloudTable Tablework ,
             [Table("ConsolidateEmployees", Connection = "AzureWebJobsStorage")] CloudTable validateTimes,
             ILogger log)
         {
+            log.LogInformation($"Deleting completed at {DateTime.Now}");
+
+
             TableQuery<WorkEntity> query = new TableQuery<WorkEntity>();
             TableQuerySegment<WorkEntity> validation = await Tablework.ExecuteQuerySegmentedAsync(query, null);
           
@@ -53,6 +56,17 @@ namespace TimesAzureFunction.Functions
                     };
                     TableOperation addinformation = TableOperation.Insert(consolidatedemployee);
                     await validateTimes.ExecuteAsync(addinformation);
+
+                    TableOperation findOperation = TableOperation.Retrieve<WorkEntity>("working", workEntity[j].RowKey);
+                    TableResult findresult = await Tablework.ExecuteAsync(findOperation);
+                    WorkEntity workentity = (WorkEntity)findresult.Result;
+                    workentity.EmployeeId = workEntity[j].EmployeeId;
+                    workentity.Type =  workEntity[j].Type;
+                    workentity.Consolidate = true;
+                    TableOperation updateTable = TableOperation.Replace(workentity);
+                    await Tablework.ExecuteAsync(updateTable);
+
+
 
                 }
             }

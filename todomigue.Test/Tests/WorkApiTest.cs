@@ -26,7 +26,7 @@ namespace todomigue.Test.Tests
 
             //Act
             IActionResult response = await ConsolidateApi.CreateEntry(request, mockTodos, logger);
-            //Assert
+           
          }
 
         [Fact]
@@ -53,12 +53,6 @@ namespace todomigue.Test.Tests
             MockCloudTable mockTodos = new MockCloudTable(new Uri("http://127.0.0.1:10002/devstoreaccount1/reports"));
             TodoWork todorequest = TestFactory.GetTodoRequest();
             DefaultHttpRequest request = TestFactory.CreateHttpRequest(todorequest);
-
-            //Act
-            
-
-            //Assert
-        
         }
 
 

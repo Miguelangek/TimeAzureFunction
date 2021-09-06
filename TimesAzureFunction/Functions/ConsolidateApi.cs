@@ -48,7 +48,8 @@ namespace TimesAzureFunction.Functions
                 Consolidate = false,
                 PartitionKey = "TODO",
                 RowKey = Guid.NewGuid().ToString(),
-                EmployeeId = todowork.EmployeeId
+                EmployeeId = todowork.EmployeeId,
+                Type = todowork.Type
                 
             };
 
